@@ -13,5 +13,9 @@
     "microservice"
   ],
   "author": "chris ludden",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cludden/restify-microbial-mongoose.git"
+  }
 }

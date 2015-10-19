@@ -1,7 +1,7 @@
-# microbial
-a [restify.js](http://restify.com) based microservice library, inspired by [sails.js](http://sailsjs.org)
+# resetify-microservice-mongoose
+a [mongoose.js](http://mongoosejs.com) adapter for [restify-microservice](https://github.com/cludden/restify-microservice)
 
 ## Install
 ```javascript
-npm install --save restify-microbial-mongoose
+npm install --save restify-microservice-mongoose
 ```

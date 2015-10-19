@@ -61,13 +61,52 @@ module.exports = {
      * @param {object} [modelDefinition.middleware.post={}] - post middleware
      * @param {function} cb - callback
      */
-        //TODO finish implementation
     registerModel: function(connection, modelDefinition, cb) {
-        // validate `modelDefinition`
-        if (!modelDefinition.schema) return cb('Invalid modelDefinition');
-        var mongoose = require('mongoose');
+        var model;
+        try {
+            // validate `modelDefinition`
+            if (!modelDefinition.schema) return cb('Invalid modelDefinition');
+            var mongoose = require('mongoose');
 
-        var schema = new mongoose.Schema(modelDefinition.schema, modelDefinition.schemaOptions || {});
+            // define new schema
+            var schema = new mongoose.Schema(modelDefinition.schema, modelDefinition.schemaOptions || {});
+
+            // attach instance methods
+            if (modelDefinition.methods) {
+                schema.method(modelDefinition.methods);
+            }
+
+            // attach class methods
+            if (modelDefinition.statics) {
+                schema.method(modelDefinition.statics);
+            }
+
+            // virtuals
+            if (modelDefinition.virtuals) {
+                _.forEach(modelDefinition.virtuals, function(gettersAndSetters, name) {
+                    if (gettersAndSetters.get) schema.virtual(name).get(gettersAndSetters.get);
+                    if (gettersAndSetters.set) schema.virtual(name).set(gettersAndSetters.set);
+                })
+            }
+
+            // middleware
+            if (modelDefinition.middleware) {
+                var middlewareTypes = ['pre', 'post'];
+                middlewareTypes.forEach(function(type) {
+                    if (modelDefinition.middleware[type]) {
+                        _.forEach(modelDefinition.middleware[type], function(middleware, event) {
+                            schema.pre(event, middleware);
+                        });
+                    }
+                });
+            }
+
+            // build the model
+            model = connection.model(modelDefinition.name, schema);
+        } catch (err) {
+            return cb('Error defining mongoose model: ' + err);
+        }
+        cb(null, model);
     },
 
 

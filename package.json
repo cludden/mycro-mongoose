@@ -4,12 +4,13 @@
   "description": "mongoose adapter for restify-microservice",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/index.test.js test/unit/* --recursive"
   },
   "keywords": [
+    "restify-microservice",
+    "adapter",
     "mongoose",
     "restify",
-    "microbial",
     "microservice"
   ],
   "author": "chris ludden",
@@ -21,6 +22,16 @@
   "dependencies": {
     "async": "^1.4.2",
     "lodash": "^3.10.1",
+    "merge-defaults": "^0.2.1",
     "mongoose": "^4.1.11"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "grunt": "^0.4.5",
+    "grunt-mocha-istanbul": "^3.0.1",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "validator": "^4.4.0"
   }
 }

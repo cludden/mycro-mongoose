@@ -1,6 +1,7 @@
 'use strict';
 
-var async = require('async'),
+var asyncjs = require('async'),
+    mongoose = require('mongoose'),
     _ = require('lodash');
 
 module.exports = {
@@ -12,6 +13,14 @@ module.exports = {
     _defaults: {
 
     },
+
+
+    /**
+     * Expose the raw mongoose library required for this module
+     *
+     * @type {Object}
+     */
+    mongoose: mongoose,
 
 
     /**
@@ -29,7 +38,7 @@ module.exports = {
         connectionInfo.options = connectionInfo.options || {};
         _.defaults(connectionInfo.options, defaults);
 
-        async.waterfall([
+        asyncjs.waterfall([
             function getConnectionString(fn) {
                 return self._buildMongooseConnectionString(connectionInfo, fn);
             },
@@ -62,51 +71,12 @@ module.exports = {
      * @param {function} cb - callback
      */
     registerModel: function(connection, modelDefinition, cb) {
-        var model;
         try {
-            // validate `modelDefinition`
-            if (!modelDefinition.schema) return cb('Invalid modelDefinition');
-            var mongoose = require('mongoose');
-
-            // define new schema
-            var schema = new mongoose.Schema(modelDefinition.schema, modelDefinition.schemaOptions || {});
-
-            // attach instance methods
-            if (modelDefinition.methods) {
-                schema.method(modelDefinition.methods);
-            }
-
-            // attach class methods
-            if (modelDefinition.statics) {
-                schema.method(modelDefinition.statics);
-            }
-
-            // virtuals
-            if (modelDefinition.virtuals) {
-                _.forEach(modelDefinition.virtuals, function(gettersAndSetters, name) {
-                    if (gettersAndSetters.get) schema.virtual(name).get(gettersAndSetters.get);
-                    if (gettersAndSetters.set) schema.virtual(name).set(gettersAndSetters.set);
-                })
-            }
-
-            // middleware
-            if (modelDefinition.middleware) {
-                var middlewareTypes = ['pre', 'post'];
-                middlewareTypes.forEach(function(type) {
-                    if (modelDefinition.middleware[type]) {
-                        _.forEach(modelDefinition.middleware[type], function(middleware, event) {
-                            schema.pre(event, middleware);
-                        });
-                    }
-                });
-            }
-
-            // build the model
-            model = connection.model(modelDefinition.name, schema);
+            var model = modelDefinition(connection);
+            return cb(null, model);
         } catch (err) {
-            return cb('Error defining mongoose model: ' + err);
+            return cb('Error defining mongoose model (' + modelDefinition.__name + '): ' + err);
         }
-        cb(null, model);
     },
 
 

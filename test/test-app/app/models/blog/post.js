@@ -3,9 +3,7 @@
 var validator = require('validator'),
     _ = require('lodash');
 
-module.exports = function(connection) {
-    var Schema = connection.base.Schema;
-
+module.exports = function(connection, Schema) {
     var options = {
         collection: 'blog-posts'
     };

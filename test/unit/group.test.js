@@ -6,7 +6,7 @@ var asyncjs = require('async'),
 
 describe('users', function() {
     it('should be registered with the `first` connection', function() {
-        expect(microservice.connections.first.connection.modelNames()).to.contain('user');
+        expect(microservice.connections.first.connection.modelNames()).to.contain('group');
     });
 
     it('should be available at `microservice.models[\'user\']`', function() {

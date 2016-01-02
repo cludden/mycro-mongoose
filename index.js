@@ -72,7 +72,7 @@ module.exports = {
      */
     registerModel: function(connection, modelDefinition, cb) {
         try {
-            var model = modelDefinition(connection);
+            var model = modelDefinition(connection, connection.base.Schema);
             return cb(null, model);
         } catch (err) {
             return cb('Error defining mongoose model (' + modelDefinition.__name + '): ' + err);

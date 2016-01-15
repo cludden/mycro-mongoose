@@ -24,7 +24,7 @@ module.exports = {
             password: 'password',
             database: 'restify-microservice-mongoose-second'
         },
-        include: [
+        models: [
             'blog/*'
         ]
     }

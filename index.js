@@ -6,6 +6,37 @@ var asyncjs = require('async'),
 
 module.exports = {
     /**
+     * Create a valid mongodb connection string
+     *
+     * @param {object} connectionInfo - connection info
+     * @param {function} cb - callback
+     * @private
+     */
+    _buildMongooseConnectionString: function(connectionInfo, cb) {
+        var connectionString = 'mongodb://';
+
+        if (connectionInfo.url) {
+            return cb(null, connectionInfo.url);
+        }
+
+        // append credentials if provided
+        if (connectionInfo.user && connectionInfo.password) {
+            if (!connectionInfo.database) return cb('A database must be specified if credentials are being used');
+            connectionString += connectionInfo.user + ':' + connectionInfo.password + '@';
+        }
+
+        // append host and port
+        connectionString += connectionInfo.host + ':' + connectionInfo.port + '/';
+
+        if (connectionInfo.database) {
+            connectionString += connectionInfo.database;
+        }
+
+        cb(null, connectionString);
+    },
+
+
+    /**
      * Specify adapter defaults
      *
      * @param {object} _defaults
@@ -24,7 +55,7 @@ module.exports = {
 
 
     /**
-     * Create a new mongoose instance with the specified connection info
+     * Create a new mongoose connection with the specified connection info
      *
      * @param {object} connectionInfo - connection info from microbrial config
      * @param {function} cb - callback
@@ -35,8 +66,7 @@ module.exports = {
             defaults = self._defaults;
 
         // get connection options, apply defaults
-        connectionInfo.options = connectionInfo.options || {};
-        _.defaults(connectionInfo.options, defaults);
+        _.defaults(connectionInfo, defaults);
 
         asyncjs.waterfall([
             function getConnectionString(fn) {
@@ -77,36 +107,5 @@ module.exports = {
         } catch (err) {
             return cb('Error defining mongoose model (' + modelDefinition.__name + '): ' + err);
         }
-    },
-
-
-    /**
-     * Create a valid mongodb connection string
-     *
-     * @param {object} connectionInfo - connection info
-     * @param {function} cb - callback
-     * @private
-     */
-    _buildMongooseConnectionString: function(connectionInfo, cb) {
-        var connectionString = 'mongodb://';
-
-        if (connectionInfo.url) {
-            return cb(null, connectionInfo.url);
-        }
-
-        // append credentials if provided
-        if (connectionInfo.user && connectionInfo.password) {
-            if (!connectionInfo.database) return cb('A database must be specified if credentials are being used');
-            connectionString += connectionInfo.user + ':' + connectionInfo.password + '@';
-        }
-
-        // append host and port
-        connectionString += connectionInfo.host + ':' + connectionInfo.port + '/';
-
-        if (connectionInfo.database) {
-            connectionString += connectionInfo.database;
-        }
-
-        cb(null, connectionString);
     }
 };

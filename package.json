@@ -1,6 +1,6 @@
 {
   "name": "restify-microservice-mongoose",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "mongoose adapter for restify-microservice",
   "main": "index.js",
   "scripts": {

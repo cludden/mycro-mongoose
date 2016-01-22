@@ -1,4 +1,4 @@
-# resetify-microservice-mongoose
+# mycro-mongoose
 a [mongoose.js](http://mongoosejs.com) adapter for [mycro](https://github.com/cludden/mycro)
 
 

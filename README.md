@@ -1,19 +1,30 @@
-# resetify-microservice-mongoose
-a [mongoose.js](http://mongoosejs.com) adapter for [restify-microservice](https://github.com/cludden/restify-microservice)
+# mycro-mongoose
+a [mongoose.js](http://mongoosejs.com) adapter for [mycro](https://github.com/cludden/mycro)
 
 
 ## Install
 ```javascript
-npm install --save restify-microservice-mongoose
+npm install --save mycro-mongoose
 ```
 
 
 ## Getting Started
-First, define one or more `mongoose` connections
+First, make sure both the `connections` and `models` hooks are enabled. (These are enabled by default, however, if you've defined your own `/config/hooks.js` file, make sure it includes both of these)
+```javascript
+// in /config/hooks.js
+module.exports = [
+    // ..
+    'connections',
+    'models'
+    // ..
+]
+```
+
+Then, define one or more `mongoose` connections
 ```javascript
 // in /config/connections.js
 
-var mongooseAdapter = require('resetify-microservice-mongoose');
+var mongooseAdapter = require('mycro-mongoose');
 
 module.exports = {
     // ..
@@ -37,12 +48,25 @@ Next, define a mongoose model
 // in /app/models/post.js
 
 module.exports = function(connection, Schema) {
-    var blogSchema = new Schema({
+    let options = {
+        collection: 'posts'
+    };
+
+    let schema = new Schema({
           title:  String,
-          author: String,
+          author: {
+              type: Schema.Types.ObjectId,
+              ref: 'users'
+          },
           body:   String,
-          comments: [{ body: String, date: Date }],
-          date: { type: Date, default: Date.now },
+          comments: [{
+              body: String,
+              date: Date
+          }],
+          date: {
+              type: Date,
+              default: Date.now
+          },
           hidden: Boolean,
           meta: {
                 votes: Number,
@@ -60,9 +84,8 @@ Lastly, use it in your app!
 // in /app/controllers/post.js
 
 module.exports = {
-    findPosts: function(req, res) {
-        var microservice = req.microservice;
-            Posts = microservice.models['post'];
+    findPosts(req, res) {
+        var Posts = req.mycro.models['post'];
 
         Posts.find({
             hidden: false,
@@ -78,3 +101,29 @@ module.exports = {
     }
 }
 ```
+
+
+## Testing
+running the tests:
+1. Update the connection info in `test/test-app/config/connections.js`
+2. Run the `mongod` server
+3. `npm test`
+
+
+to view coverage:  
+1. Update the connection info in `test/test-app/config/connections.js`
+2. Run the `mongod` server
+3. `grunt coverage`
+
+
+## Contributing
+1. [Fork it](https://github.com/cludden/mycro-mongoose/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+
+## License
+Copyright (c) 2015 Chris Ludden.
+Licensed under the [MIT license](LICENSE.md).

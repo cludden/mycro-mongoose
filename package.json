@@ -1,12 +1,13 @@
 {
-  "name": "restify-microservice-mongoose",
+  "name": "mycro-mongoose",
   "version": "0.1.0",
-  "description": "mongoose adapter for restify-microservice",
+  "description": "mongoose adapter for mycro",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/index.test.js test/unit/* --recursive"
   },
   "keywords": [
+    "mycro",
     "restify-microservice",
     "adapter",
     "mongoose",
@@ -17,11 +18,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cludden/restify-microservice-mongoose.git"
+    "url": "https://github.com/cludden/mycro-mongoose.git"
   },
   "dependencies": {
     "async": "^1.4.2",
-    "lodash": "^3.10.1",
+    "lodash": "^4.0.0",
     "merge-defaults": "^0.2.1",
     "mongoose": "^4.1.11",
     "restify-microservice": "^0.1.0"

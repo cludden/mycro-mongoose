@@ -10,7 +10,7 @@ before(function() {
 
 describe('basic tests', function() {
     it('should start without error', function(done) {
-        var Microservice = require('restify-microservice'),
+        var Microservice = require('mycro'),
             microservice = new Microservice();
         global.microservice = microservice;
 

@@ -10,7 +10,7 @@ module.exports = {
             port: 27017,
             user: 'test',
             password: 'password',
-            database: 'restify-microservice-mongoose-first'
+            database: 'mycro-mongoose-first'
         },
         default: true
     },
@@ -22,7 +22,7 @@ module.exports = {
             port: 27017,
             user: 'test',
             password: 'password',
-            database: 'restify-microservice-mongoose-second'
+            database: 'mycro-mongoose-second'
         },
         models: [
             'blog/*'

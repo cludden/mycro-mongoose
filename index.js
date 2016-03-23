@@ -100,9 +100,9 @@ module.exports = {
      * @param {object} [modelDefinition.middleware.post={}] - post middleware
      * @param {function} cb - callback
      */
-    registerModel: function(connection, modelDefinition, cb) {
+    registerModel: function(connection, modelDefinition, name, mycro, cb) {
         try {
-            var model = modelDefinition(connection, connection.base.Schema);
+            var model = modelDefinition(connection, connection.base.Schema, name, mycro);
             return cb(null, model);
         } catch (err) {
             return cb('Error defining mongoose model (' + modelDefinition.__name + '): ' + err);

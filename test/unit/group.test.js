@@ -2,7 +2,8 @@
 'use strict';
 
 var asyncjs = require('async'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    sinon = require('sinon');
 
 describe('users', function() {
     it('should be registered with the `first` connection', function() {
@@ -66,5 +67,12 @@ describe('users', function() {
                 });
             }]
         }, done);
+    });
+
+    it('should allow models to access the mycro instance', function() {
+        sinon.spy(microservice, 'log');
+        microservice.log('silly', 'test');
+        expect(microservice.log).to.have.been.called;
+        microservice.log.restore();
     });
 });

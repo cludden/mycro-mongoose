@@ -1,6 +1,6 @@
 {
   "name": "mycro-mongoose",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "mongoose adapter for mycro",
   "main": "index.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "grunt-mocha-istanbul": "^3.0.1",
     "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
+    "mycro": "^0.4.0",
     "sinon": "^1.17.2",
     "validator": "^4.4.0"
   }

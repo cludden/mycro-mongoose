@@ -102,6 +102,43 @@ module.exports = {
 }
 ```
 
+## Config
+The connection configuration object is described in more detail below
+```javascript
+// in config/connections.js
+const mongooseAdapter = require('mycro-mongoose');
+
+module.exports = {
+    // ..
+    mongo: {
+        // in order to specify a mongodb connection, use this adapter as the adapter object
+        adapter: mongooseAdapter,
+
+        // all config is specified in the 'config' top level key. the key can be an object
+        // or a synchronous function (executed at runtime) that is passed the mycro instance and expects
+        // a config object in return
+        config: {
+            // either a valid mongodb url connection string can be provided
+            url: 'mongodb://sampleuser:correct-horse-batter-staple@localhost:27017/test',
+
+            // or the following are used to build a valid connection string
+            host: 'localhost'
+            port: 27017,
+            user: 'sampleuser',
+            password: 'correct-horse-batter-staple',
+            database: 'test'
+
+            // any additional connection options can be specified in an optional 'options' keys
+            options: {
+                replSet: {
+                    sslValidate: false
+                }
+            }
+        }
+    }
+    // ..
+}
+```
 
 ## Testing
 running the tests:

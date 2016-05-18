@@ -1,8 +1,8 @@
 'use strict';
 
-var asyncjs = require('async'),
-    mongoose = require('mongoose'),
-    _ = require('lodash');
+var asyncjs = require('async');
+var mongoose = require('mongoose');
+var _ = require('lodash');
 
 module.exports = {
     /**
@@ -74,12 +74,12 @@ module.exports = {
             },
 
             function getConnection(url, fn) {
-                var connection = mongoose.createConnection(url);
-                connection.on('connected', function() {
-                    return fn(null, connection);
-                });
-                connection.on('error', function(err) {
-                    return fn(err);
+                var options = connectionInfo.options || {};
+                var connection = mongoose.createConnection(url, options, function(err) {
+                    if (err) {
+                        return fn(err);
+                    }
+                    fn(null, connection);
                 });
             }
         ], cb);
